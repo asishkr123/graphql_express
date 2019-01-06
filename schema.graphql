@@ -1,0 +1,48 @@
+type Query {
+  User(_id: ID!): User!
+  currentUser: User!
+  getProfile: Profile!
+}
+
+type Token {
+  token: String!
+}
+
+type User {
+  name: String
+  email: String
+  password: String
+  _id: ID
+}
+
+type Profile {
+  handle: String!
+  skills: String!
+  company: String
+  status: String!
+  githubusername: String
+  bio: String
+  from: String
+  to: String
+}
+
+type Mutation {
+  createUser(
+    name: String!
+    email: String!
+    password: String!
+    password2: String!
+  ): User
+  loginUser(email: String!, password: String!): Token!
+  createProfile(
+    handle: String!
+    skills: String!
+    company: String
+    githubusername: String
+    bio: String
+    from: String
+    to: String
+    status: String
+    website: String
+  ): Profile!
+}
