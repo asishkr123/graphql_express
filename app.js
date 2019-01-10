@@ -4,9 +4,10 @@ import mongoose from "mongoose";
 import { mongoURI as db } from "./config/keys";
 import { GraphQLServer } from "graphql-yoga";
 import { resolvers } from "./Resolvers";
+import cors from 'cors';
 const app = express();
 app.use(json());
-
+app.use(cors());
 mongoose.connect(
   db,
   { useNewUrlParser: true }

@@ -1,11 +1,32 @@
 type Query {
   User(_id: ID!): User!
   currentUser: User!
-  getProfile: Profile!
+  getProfile: Profile
+  currentProfile: Profile
+  getProfileByHandle: Profile
+  getPosts: [Post!]
 }
 
 type Token {
   token: String!
+}
+
+type Post {
+  text: String!
+  likes: [ID!]
+  user: User
+  comment: [Comment!]
+  posted: String
+  _id: ID!
+}
+
+type Comment {
+  text: String
+  likes: [ID!]
+  user: User
+  post: Post!
+  date: String
+  _id: ID!
 }
 
 type User {
@@ -13,17 +34,24 @@ type User {
   email: String
   password: String
   _id: ID
+  posts: [Post!]
+}
+
+type Follower {
+  user: User!
+  following: User!
 }
 
 type Profile {
-  handle: String!
-  skills: String!
+  handle: String
+  skills: String
   company: String
-  status: String!
+  status: String
   githubusername: String
   bio: String
   from: String
   to: String
+  following: [Follower!]
 }
 
 type Mutation {
@@ -45,4 +73,12 @@ type Mutation {
     status: String
     website: String
   ): Profile!
+  deleteProfile: String
+  createPost(text: String!): Post
+  deletePost(_id: ID!): String!
+  createComment(text: String!, _id: ID!): Comment
+  deleteComment(_id: ID!): String!
+  likePost(_id: ID!): Post
+  unLikePost(_id: ID!): Post
+  followUser(_id: ID!): Follower
 }

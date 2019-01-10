@@ -4,12 +4,12 @@ import { secretOrKey } from "../config/keys";
 export const authenticateUser = request => {
   const header = request.headers.authorization;
   if (!header) {
-    return Error(JSON.stringify("not authorized"));
+    throw new Error('not authorized')
   } else {
     const token = header.replace("Bearer ", "");
     const decoded = verify(token, secretOrKey);
-    if (!decoded) {
-      return Error(JSON.stringify( 'errors : invalid token'))
+    if (decoded instanceof Error) {
+      throw new Error('invalid token')
     } else {
       return {
         user: decoded.user,

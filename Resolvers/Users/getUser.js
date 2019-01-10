@@ -3,7 +3,6 @@ import { authenticateUser } from "../../Validators/auth";
 export function user(parent, args, ctx) {
   const user = authenticateUser(ctx.request);
   if(user instanceof Error || user === null){
-      console.log("this is an error")
       return new Error(JSON.stringify('Not authorized'))
   } else {
     console.log(user);
