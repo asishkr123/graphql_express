@@ -1,3 +1,7 @@
+A fullstack graphql app 
+A mern stack app project from brad traversy rebuilt using graphql and react 
+
+
 # Install dependencies for server
 npm install
 
