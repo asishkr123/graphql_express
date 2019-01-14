@@ -1,13 +1,21 @@
 import React, { Component } from "react";
 import { Mutation } from "react-apollo";
 import { loginUser } from "../../queries/UserQueries";
-
-export default class Login extends Component {
+import {connect}  from "react-redux";
+import {currentUser} from '../../actions/userActions';
+import jwt_decode  from 'jwt-decode';
+class Login extends Component {
   state = {
     password: "",
     email: "",
     error: {}
   };
+  componentDidMount(){
+    console.log(this.props.user)     
+      if(this.props.user.isAuthenticated){
+         this.props.history.push('/Profile');
+      }
+  }
   render() {
     const { password, email } = this.state.error;
     return (
@@ -24,10 +32,11 @@ export default class Login extends Component {
           });
         }}
         onCompleted={data => {
-          console.log(data);
-          console.log(data.loginUser.token);
           const token = data.loginUser.token;
           localStorage.setItem('jsonwebToken',token);
+          const decoded =  jwt_decode(token)
+          this.props.currentUser(decoded);
+          this.props.history.push('/profile');
         }}
       >
         {(loginUser, { data, loading, error }) => (
@@ -105,3 +114,11 @@ export default class Login extends Component {
     );
   }
 }
+
+
+const mapStatToProps = (state) => ({
+      user : state.user
+})
+
+
+export default connect(mapStatToProps,{currentUser})(Login)

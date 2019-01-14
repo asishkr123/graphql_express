@@ -14,7 +14,7 @@ export const createProfile = async (parent, args, ctx) => {
     } else {
       const handle = await Profile.findOne({ handle: args.handle });
       if (handle) {
-        return Error(JSON.stringify((errors.handle = "handle already exists")));
+        return Error(JSON.stringify({...errors , handle : "handle already exists"}));
       }
       const skills = args.skills.split(",");
       const newProfile = new Profile({

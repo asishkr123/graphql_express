@@ -19,6 +19,7 @@ import { unLikePost } from "./Posts/UnlikePost";
 import { getFollowing } from "./Users/getfollowing";
 import  {followUser}    from './Users/FollowUsers';
 import { QueryUserFollowing } from "./Users/getFollowingUserdata";
+import  {getAllProfiles}   from  './Profiles/getAllProfiles';
 
 export const resolvers = {
   Mutation: {
@@ -39,7 +40,8 @@ export const resolvers = {
     currentUser: currentUser,
     currentProfile: getProfile,
     getProfileByHandle,
-    getPosts
+    getPosts,
+    getAllProfiles
   },
   Post: {
     user: QueryUser,
@@ -56,6 +58,7 @@ export const resolvers = {
     following : QueryUserFollowing,
   },
   Profile: {
-    following: getFollowing
+    following: getFollowing,
+    user     : QueryUser
   }
 };

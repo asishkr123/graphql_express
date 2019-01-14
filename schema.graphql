@@ -3,8 +3,9 @@ type Query {
   currentUser: User!
   getProfile: Profile
   currentProfile: Profile
-  getProfileByHandle: Profile
+  getProfileByHandle(handle: String!): Profile
   getPosts: [Post!]
+  getAllProfiles: [Profile!]!
 }
 
 type Token {
@@ -52,6 +53,7 @@ type Profile {
   from: String
   to: String
   following: [Follower!]
+  user: User!
 }
 
 type Mutation {
