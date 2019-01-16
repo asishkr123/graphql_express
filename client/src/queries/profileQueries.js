@@ -20,6 +20,14 @@ export const getCurrentProfile = gql`
   }
 `;
 
+export const deletePost = gql`
+  mutation($id: ID!) {
+    deletePost(_id: $id) {
+      text
+    }
+  }
+`;
+
 export const getProfileByHandle = gql`
   query($handle: String!) {
     getProfileByHandle(handle: $handle) {
@@ -59,6 +67,12 @@ export const profilePosts = gql`
           text
           likes
           _id
+          comment{
+            text
+            user{
+              name
+            }
+          }
         }
       }
     }
@@ -85,6 +99,14 @@ export const createProfile = gql`
       handle
       skills
       status
+    }
+  }
+`;
+
+export const createPost = gql`
+  mutation($text: String!) {
+    createPost(text: $text) {
+      text
     }
   }
 `;

@@ -36,7 +36,13 @@ const ProfileSchema = new Schema({
   },
   githubUsername: {
     type: String
-  }
+  },
+  friends  : [
+     {
+       type : Schema.Types.ObjectId,
+       ref  : 'user'
+     }
+  ]
 });
 
 const Profile = model("profile", ProfileSchema);
