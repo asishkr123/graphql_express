@@ -12,9 +12,13 @@ type Token {
   token: String!
 }
 
+type Likes {
+  user: User!
+}
+
 type Post {
   text: String!
-  likes: [ID!]
+  likes: [Likes!]
   user: User
   comment: [Comment!]
   posted: String
@@ -38,9 +42,19 @@ type User {
   posts: [Post!]
 }
 
-type Follower {
+type Following {
   user: User!
   following: User!
+}
+
+type Friends {
+  user: User!
+  friend: User!
+}
+
+type Follower {
+  user: User!
+  follower: User!
 }
 
 type Profile {
@@ -52,7 +66,8 @@ type Profile {
   bio: String
   from: String
   to: String
-  following: [Follower!]
+  following: [Following!]
+  followers: [Follower!]
   user: User!
   friends: [ID!]
 }
@@ -81,9 +96,10 @@ type Mutation {
   deletePost(_id: ID!): String!
   createComment(text: String!, _id: ID!): Comment
   deleteComment(_id: ID!): String!
-  likePost(_id: ID!): Post
-  unLikePost(_id: ID!): Post
-  followUser(_id: ID!): Follower
+  likePost(_id: ID!): String
+  unLikePost(_id: ID!): String
+  followUser(_id: ID!): String
+  unFollowUser(_id: ID!): String
   addFriend(_id: ID!, request: Boolean!): Profile
   unFriend(_id: ID!): Profile
 }

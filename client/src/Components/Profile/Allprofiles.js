@@ -3,12 +3,14 @@ import { Query } from "react-apollo";
 import { getAllProfiles } from "../../queries/profileQueries";
 import Spinner from "../common/Spinner";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import FollowUser from "./FollowUser";
 
-export default function Allprofiles() {
+function Allprofiles(props) {
   return (
     <Query
       query={getAllProfiles}
-      onCompleted={data => console.log(data)}
+      onCompleted={data => console.log(data.getAllProfiles)}
       onError={error => console.log(error)}
     >
       {({ data, error, loading }) => {
@@ -31,6 +33,20 @@ export default function Allprofiles() {
                             View Profile
                           </button>
                         </Link>
+                        {props.user.isAuthenticated &&
+                        props.user.user.id !== profile.user._id ? (
+                          <FollowUser
+                            id={profile.user._id}
+                            followed={
+                              profile.followers.length > 0 &&
+                              profile.followers.some(
+                                user => user.follower._id === props.user.user.id
+                              )
+                            }
+                          />
+                        ) : (
+                          <></>
+                        )}
                       </div>
                       <ul className="collection-with-header col s5">
                         <li className="collection-header">
@@ -54,3 +70,9 @@ export default function Allprofiles() {
     </Query>
   );
 }
+
+const mapStateToProps = state => ({
+  user: state.user
+});
+
+export default connect(mapStateToProps)(Allprofiles);

@@ -1,6 +1,6 @@
 import Post from '../../models/Posts';
 import { authenticateUser } from '../../Validators/auth';
-
+import Like from '../../models/Likes';
 
 
 
@@ -10,19 +10,17 @@ export const unLikePost =  async (parent,args,ctx,info) => {
     if(user instanceof Error){
          return user;
     }
-    const post  =  await Post.findById(args._id)
+    const post   =  await Post.findById(args._id);
     if(post){
-        if (post.likes.filter(like => like === user.id).length === 0) {
-            return new Error('Not yet liked this Post')
-        }
-        const removeIndex = post.likes.indexOf(user.id);
-        post.likes.splice(removeIndex,1)
-        const newPost = await post.save();
-        return {...newPost._doc, _id : newPost.id}
-        
-    } else{
-         return null
+       const postLiked =  await Like.findOne({user : user.id}).where('post' , args._id);
+       if(postLiked){
+           await Like.findOneAndDelete({post : args._id}).where('user' , user.id)
+           return 'success'
+       } 
+       return Error(JSON.stringify({error : "YOU haven't yet liked the post"}))
+     
     }
-       
+    return Error(JSON.stringify({error : "the post doesn't exist"}))
+    
                                                
 }

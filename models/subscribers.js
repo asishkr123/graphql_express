@@ -2,7 +2,7 @@ import {Schema,model} from 'mongoose';
 
 
 
-const FollowSchema = new Schema({
+const FollowingSchema = new Schema({
       user : {
          type : Schema.Types.ObjectId,
          ref : 'user',
@@ -15,7 +15,7 @@ const FollowSchema = new Schema({
 
 
 
-const Follow = model('follow', FollowSchema);
+const Following = model('follow', FollowingSchema);
 
 
-export default Follow
+export default Following

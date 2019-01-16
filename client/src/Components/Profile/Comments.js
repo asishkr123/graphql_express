@@ -7,8 +7,6 @@ class Comments extends React.Component {
     text: ""
   };
   render() {
-    console.log(this.props);
-    const { comment } = this.props;
     return (
       <Mutation
         mutation={createComment}
@@ -50,9 +48,9 @@ class Comments extends React.Component {
                   </div>
                 </form>
                 <div className="col s12">
-                  {comment.map((comment, index) => {
+                  {this.props.comments.map((comment, index) => {
                     return (
-                      <div className="col s12 card">
+                      <div key = {index} className="col s12 card">
                         <div className="card-content">
                           <h5>{comment.text}</h5>
                         </div>

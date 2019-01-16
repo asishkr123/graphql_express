@@ -20,11 +20,15 @@ export const getCurrentProfile = gql`
   }
 `;
 
+export const likePosts = gql`
+  mutation($id: ID!) {
+    likePost(_id: $id)
+  }
+`;
+
 export const deletePost = gql`
   mutation($id: ID!) {
-    deletePost(_id: $id) {
-      text
-    }
+    deletePost(_id: $id)
   }
 `;
 
@@ -39,7 +43,15 @@ export const getProfileByHandle = gql`
         name
         posts {
           text
-          likes
+          comment{
+              text
+              
+          }
+          likes{
+            user{
+              name
+            }
+          }
           _id
         }
       }
@@ -53,7 +65,33 @@ export const getAllProfiles = gql`
       handle
       skills
       status
+      following{
+        following{
+          name
+          _id
+        }
+        user{
+          name
+          _id
+        }
+      }
+      followers{
+         follower{
+           name
+           _id
+         }
+      }
+      user{
+        name
+        _id
+      }
     }
+  }
+`;
+
+export const unlikePost = gql`
+  mutation($id: ID!) {
+    unLikePost(_id: $id)
   }
 `;
 
@@ -65,11 +103,15 @@ export const profilePosts = gql`
         name
         posts {
           text
-          likes
+          likes {
+            user {
+              name
+            }
+          }
           _id
-          comment{
+          comment {
             text
-            user{
+            user {
               name
             }
           }
@@ -108,5 +150,18 @@ export const createPost = gql`
     createPost(text: $text) {
       text
     }
+  }
+`;
+
+export const followUser = gql`
+  mutation($id: ID!) {
+    followUser(_id: $id)
+  }
+`;
+
+
+export const unFollowUser = gql`
+  mutation($id: ID!) {
+    unFollowUser(_id: $id)
   }
 `;

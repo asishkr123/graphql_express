@@ -13,6 +13,7 @@ const logoutUser = ({currentUser,history}) => {
 } 
 
  
+ 
  function Navbar(props) {
   return (
     <nav>
@@ -24,9 +25,10 @@ const logoutUser = ({currentUser,history}) => {
                <> 
               <li><Link to="/posts">Posts</Link></li>
               <li><Link to = "/dashboard">Dashboard</Link></li>
-              <li onClick = {() => {logoutUser(props)}}>Logout</li></> ) : (<>
+              <li onClick = {() => {logoutUser(props)}}><a href = "">Logout</a></li></> ) : (<>
                 <li><Link to="/register">register</Link></li>
                 <li><Link to="/login">Login</Link></li>
+                <li><Link to = "/allProfiles">allProfiles</Link></li>
               </>) 
             }
         </ul>

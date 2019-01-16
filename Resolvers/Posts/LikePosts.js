@@ -1,5 +1,8 @@
 import Post from "../../models/Posts";
+
 import { authenticateUser } from "../../Validators/auth";
+import Like from "../../models/Likes";
+
 
 export const likePost = async (parent, args, ctx, info) => {
   const user = authenticateUser(ctx.request);
@@ -7,16 +10,22 @@ export const likePost = async (parent, args, ctx, info) => {
     return user;
   }
 
-  const post = await Post.findById(args._id);
-  if (post) {
-    if (post.likes.filter(like => like === user.id).length > 0) {
-      return Error("You already liked the Post");
-    } else {
-      post.likes.unshift(user.id);
-      const newPost = await post.save();
-      return { ...newPost._doc, _id: newPost.id };
-    }
-  } else {
-    return null;
+
+  const post   =  await Post.findById(args._id);
+  if(post){
+     const postLiked =  await Like.findOne({user : user.id}).where('post' , args._id);
+      if(!postLiked){
+         const newLike =  new Like({
+              user :  user.id,
+              post  : args._id
+         })
+         const data = await newLike.save()
+         return 'Success'
+      }else {
+          return Error(JSON.stringify({error : "YOU've already liked the post"}))
+      }
+   
   }
+  return Error(JSON.stringify({error : "the post doesn't exist"}))
+  
 };

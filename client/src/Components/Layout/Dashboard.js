@@ -39,7 +39,7 @@ function Dashboard() {
                       </span>
                     </div>
                     <div className="card col s8">
-                      {data.currentProfile.following
+                      {data.currentProfile.following ? data.currentProfile.following
                         .map(item => item.following.posts)
                         .flat(1)
                         .map(post => (
@@ -48,7 +48,7 @@ function Dashboard() {
                               <div className="card-content">{post.text}</div>
                             </div>
                           </div>
-                        ))}
+                        )) : ""}
                     </div>
                   </div>
                 </div>
