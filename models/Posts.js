@@ -11,6 +11,9 @@ const PostSchema = new Schema({
         required : true
 
     },
+    name : {
+         type : String
+    },
     posted : {
         type : Date,
         default  : Date.now()

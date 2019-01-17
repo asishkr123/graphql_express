@@ -20,13 +20,13 @@ import { getFollowing } from "./Users/getfollowing";
 import { followUser } from "./Users/FollowUsers";
 import { QueryUserFollowing } from "./Users/getFollowingUserdata";
 import { getAllProfiles } from "./Profiles/getAllProfiles";
-import { addFriend } from "./Profiles/AddFriends";
-import { unFriend } from "./Profiles/unFriend";
 import { getLikes } from "./Posts/getLikes";
+import {profileVisited} from './Profiles/profileVisited';
 import { unFollowUser } from "./Users/unfollowUsers";
 import {getFollowers}  from './Users/getFollowers';
 import {QueryUserFollowers} from './Users/QueryUserFollowers';
-
+import {getCommunicatingUsers}  from './Users/getCommunicatingUser'
+import  { getNotifications} from './Profiles/getNotifications';
 export const resolvers = {
   Mutation: {
     createUser: createUser,
@@ -41,8 +41,7 @@ export const resolvers = {
     deleteComment,
     followUser,
     unFollowUser,
-    addFriend,
-    unFriend
+    profileVisited
   },
   Query: {
     User: user,
@@ -50,12 +49,17 @@ export const resolvers = {
     currentProfile: getProfile,
     getProfileByHandle,
     getPosts,
-    getAllProfiles
+    getAllProfiles,
+    getNotifications,
   },
   Post: {
     user: QueryUser,
     comment: PostComments,
     likes: getLikes
+  },
+  Notification : {
+    user : QueryUser,
+    commUser  :  getCommunicatingUsers
   },
   Comment: {
     user: QueryUser

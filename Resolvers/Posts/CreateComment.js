@@ -1,5 +1,6 @@
 import Comments from "../../models/Comments";
 import { authenticateUser } from "../../Validators/auth";
+import { notificationEvent } from "../../events";
 
 export const createComment = async (parent, args, ctx, info) => {
   const user = authenticateUser(ctx.request);
@@ -13,6 +14,7 @@ export const createComment = async (parent, args, ctx, info) => {
   });
   const comment = await newComment.save();
   if (comment) {
+    notificationEvent.emit('newEvent' , {user : user.id , type : "CommentCreated"});
     return { ...comment._doc, _id: comment.id };
   } else {
     return null;

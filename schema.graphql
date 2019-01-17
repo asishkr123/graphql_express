@@ -6,6 +6,7 @@ type Query {
   getProfileByHandle(handle: String!): Profile
   getPosts: [Post!]
   getAllProfiles: [Profile!]!
+  getNotifications: [Notification!]
 }
 
 type Token {
@@ -47,9 +48,10 @@ type Following {
   following: User!
 }
 
-type Friends {
+type Notification {
   user: User!
-  friend: User!
+  type: String!
+  commUser: User!
 }
 
 type Follower {
@@ -69,7 +71,6 @@ type Profile {
   following: [Following!]
   followers: [Follower!]
   user: User!
-  friends: [ID!]
 }
 
 type Mutation {
@@ -100,6 +101,5 @@ type Mutation {
   unLikePost(_id: ID!): String
   followUser(_id: ID!): String
   unFollowUser(_id: ID!): String
-  addFriend(_id: ID!, request: Boolean!): Profile
-  unFriend(_id: ID!): Profile
+  profileVisited(_id: ID!): String
 }

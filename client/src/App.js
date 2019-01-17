@@ -56,6 +56,9 @@ class App extends Component {
               <Switch>
                 <Route exact path="/profile/:handle" component={Posts} />
               </Switch>
+              <Switch>
+                <Route exact path="/activity" component={Posts} />
+              </Switch>
             </>
           </BrowserRouter>
         </ApolloProvider>

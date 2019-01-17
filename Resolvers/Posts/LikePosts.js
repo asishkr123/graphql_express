@@ -2,6 +2,7 @@ import Post from "../../models/Posts";
 
 import { authenticateUser } from "../../Validators/auth";
 import Like from "../../models/Likes";
+import { notificationEvent } from "../../events";
 
 
 export const likePost = async (parent, args, ctx, info) => {
@@ -20,6 +21,7 @@ export const likePost = async (parent, args, ctx, info) => {
               post  : args._id
          })
          const data = await newLike.save()
+         notificationEvent.emit('newEvent' , {user : user.id , commUser : post.user , name : post.name,type : "LikePost"})
          return 'Success'
       }else {
           return Error(JSON.stringify({error : "YOU've already liked the post"}))

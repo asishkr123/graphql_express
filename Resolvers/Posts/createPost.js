@@ -1,6 +1,6 @@
 import Post from '../../models/Posts';
-import Subscriber from '../../models/subscribers';
 import { authenticateUser } from '../../Validators/auth';
+import { notificationEvent } from '../../events';
 
 export const createPost = async (parent,args,ctx,info) => {
      const user = authenticateUser(ctx.request);
@@ -11,14 +11,11 @@ export const createPost = async (parent,args,ctx,info) => {
      const newPost = new Post({
          text :  args.text,
          user :  user.id,
+         name :  user.user
      })
      const post =  await newPost.save();
+     notificationEvent.emit('newEvent' , {user : user.id , commUser : user.id,type : 'createPost'});
      if(post){
-        //  const subscribedPost = new Subscriber({
-        //        post : post.id,
-        //        user  : user.id
-        //  })
-        // const savedSubPost =  await subscribedPost.save()
          return {...post._doc,_id : post.id}
      } else {
          return null;
