@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {Mutation} from 'react-apollo'
-import {unlikePost , profilePosts} from '../../queries/profileQueries'
+import {unlikePost , getProfileByHandle, getCurrentProfile} from '../../queries/profileQueries'
 export default class UnLikePost extends Component {
   render() {
     return (
@@ -17,14 +17,19 @@ export default class UnLikePost extends Component {
        {
          (unLikePost,{data,loading,error}) => {
               return (
-                <div className="col s1">
+                <div className="col offset-s1 s2">
                 <button 
                 onClick={() => {
                     unLikePost({
                       variables: {
                         id: this.props.id
                       },
-                      refetchQueries : [{query : profilePosts}]
+                      refetchQueries : [
+                        !this.props.fromDashboard ? 
+                        {query : getProfileByHandle , variables : {handle : this.props.handle}}
+                        : {query : getCurrentProfile}
+                      
+                      ]
                     });
                     
                   }}

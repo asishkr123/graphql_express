@@ -8,17 +8,19 @@ notificationEvent.on("newEvent", async ({ user, commUser, name, type }) => {
     case "LikePost":
       const notification = new Notification({
         user,
+        type,
         commUser,
-        type: `you liked a post by ${name}`,
+        text: `you liked a post by ${name}`,
         date: Date.now()
       });
       await notification.save();
       break;
-    case "unlikePost":
+    case "unLikePost":
       const postunliked = new Notification({
         user,
         commUser,
-        type: `you unliked a post by ${name}`,
+        type,
+        text: `you unliked a post by ${name}`,
         date: Date.now()
       });
       await postunliked.save();
@@ -27,8 +29,9 @@ notificationEvent.on("newEvent", async ({ user, commUser, name, type }) => {
       const postCreated = new Notification({
         user,
         commUser,
-        type: `You created a post`,
-        date : Date.now()
+        type,
+        text: `You created a post`,
+        date: Date.now()
       });
       await postCreated.save();
       break;
@@ -36,7 +39,8 @@ notificationEvent.on("newEvent", async ({ user, commUser, name, type }) => {
       const profileVisited = new Notification({
         user,
         commUser,
-        type: `${name} visited your profile`,
+        type,
+        text: `${name} visited your profile`,
         date: Date.now()
       });
       await profileVisited.save();

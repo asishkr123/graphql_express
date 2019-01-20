@@ -15,6 +15,9 @@ const NotificationSchema  = new Schema({
        type : {
             type : String
        },
+       text :  {
+           type : String
+       },
        date : {
             type : Date
        },

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Mutation } from "react-apollo";
-import { likePosts, profilePosts } from "../../queries/profileQueries";
+import { likePosts, getProfileByHandle, getCurrentProfile} from "../../queries/profileQueries";
 import UnLikePost from "./unlikePost";
 
 export default class LikePosts extends Component {
@@ -32,14 +32,24 @@ export default class LikePosts extends Component {
         {(likePost, { data, loading, error }) => {
           return (
             <>
-              <div className="col s1">
+              <div className="col s2">
                 <button
                   onClick={() => {
                     likePost({
                       variables: {
                         id: this.props.id
                       },
-                      refetchQueries : [{query : profilePosts}]
+                      refetchQueries : [
+                        !this.props.fromDashboard ?
+                        {
+                          query : getProfileByHandle , variables : {handle : this.props.handle},
+                          
+                      } :
+
+                      {
+                        query  : getCurrentProfile
+                      }
+                      ]
                     });
                     
                   }}
@@ -52,7 +62,7 @@ export default class LikePosts extends Component {
                 </button>
                 
               </div>
-              <UnLikePost setError = {this.setError} id = {this.props.id}/>
+              <UnLikePost fromDashboard = {this.props.fromDashboard} setError = {this.setError} id = {this.props.id} handle = {this.props.handle}/>
               {/* <div className="col s1">
                 <button className="btn waves-effect waves-light white black-text">
                   <i className="material-icons">thumb_down</i> 

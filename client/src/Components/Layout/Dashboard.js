@@ -3,13 +3,16 @@ import { connect } from "react-redux";
 import { Query } from "react-apollo";
 import { getCurrentProfile } from "../../queries/profileQueries";
 import Spinner from "../common/Spinner";
+import GithubProfile from "../Profile/GithubProfile";
+import { Link } from "react-router-dom";
+import InvidualPost from "../Profile/InvidualPost";
 function Dashboard() {
   return (
     <div className="container">
       <Query
         query={getCurrentProfile}
         onCompleted={data => {
-          console.log(data.currentProfile);
+          console.log(data);
         }}
       >
         {({ data, loading, error }) => {
@@ -24,35 +27,77 @@ function Dashboard() {
             </h4>
           ) : (
             <div className="row">
-              <div className="card col s12">
+              <h4 className="col s10 center-align blue-text lighten-2-text">
+                {data.currentProfile.handle}
+              </h4>
+              <div className="col s6 card">
                 <div className="card-content">
                   <div className="row">
-                    <div className=" card lighten-3 blue col s4">
-                      <h4 className="white-text center-align lighten-2">
-                        {data.currentProfile.handle}
-                      </h4>
-                      <strong className="black-text align-center lighten-2-text">
+                    <div className="row col s4">
+                      <Link to="/posts">
+                        <div className="col s12 blue-text">
+                          {data.currentProfile.user.posts.length}
+                        </div>
+                      </Link>
+                      <div className="col s12 blue-text lighten-2-text">
+                        Posts
+                      </div>
+                    </div>
+                    <div className="row col s4">
+                      <Link
+                        to={{
+                          pathname: "/following",
+                          state: {  following: data.currentProfile.following}
+                        }}
+                      >
+                        <div className="col s12 blue-text">
+                          {data.currentProfile.following.length}
+                        </div>
+                      </Link>
+                      <div className="col s12 blue-text lighten-2-text">
                         following
-                      </strong>
-                      <span className="white-text lighten-2-text">
-                        {data.currentProfile.following.length}
-                      </span>
+                      </div>
                     </div>
-                    <div className="card col s8">
-                      {data.currentProfile.following ? data.currentProfile.following
-                        .map(item => item.following.posts)
-                        .flat(1)
-                        .map(post => (
-                          <div key={post._id} className="row">
+                    <div className="row col s4">
+                      <Link
+                        to={{
+                          pathname: "/followers",
+                          state: { followers: data.currentProfile.followers , following: data.currentProfile.following}
+                        }}
+                      >
+                        <div className="col s12 blue-text">
+                          {data.currentProfile.followers.length}
+                        </div>
+                      </Link>
+                      <div className="col s12 blue-text lighten-2-text">
+                        followers
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    {data.currentProfile.following
+                      ? data.currentProfile.following
+                          .map(item => item.following.posts)
+                          .flat(1)
+                          .map(post => (
                             <div className="card col s12">
-                              <div className="card-content">{post.text}</div>
+                              {/* <div className="card-content">{post.text}</div> */}
+                              <div className="card-content">
+                                <InvidualPost
+                                  handle={data.currentProfile.handle}
+                                  post={post}
+                                  id={post.user._id}
+                                  name={post.user.name}
+                                  fromDashboard={true}
+                                />
+                              </div>
                             </div>
-                          </div>
-                        )) : ""}
-                    </div>
+                          ))
+                      : ""}
                   </div>
                 </div>
               </div>
+              <GithubProfile username={data.currentProfile.handle} />
             </div>
           );
         }}

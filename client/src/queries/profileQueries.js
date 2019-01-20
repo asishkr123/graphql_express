@@ -6,19 +6,63 @@ export const getCurrentProfile = gql`
       handle
       skills
       status
+      githubusername
+      user{
+        name
+        _id
+        posts{
+          likes{
+            user{
+              name
+            }
+          }
+          text
+        }
+      }
+      followers{
+        follower{
+          name
+          _id
+          profile{
+            handle
+          }
+        }
+      }
       following {
         following {
           name
+          _id
+          profile{
+            handle
+          }
           posts {
             text
             posted
             _id
+            comment{
+               text
+               user{
+                 name
+               }
+            }
+            likes{
+              user{
+                name
+              }
+            }
+            user{
+              _id
+            }
           }
         }
       }
     }
   }
 `;
+
+
+
+
 
 export const likePosts = gql`
   mutation($id: ID!) {
@@ -41,14 +85,14 @@ export const getProfileByHandle = gql`
       company
       user {
         name
+        _id
         posts {
           text
-          comment{
-              text
-              
+          comment {
+            text
           }
-          likes{
-            user{
+          likes {
+            user {
               name
             }
           }
@@ -65,23 +109,23 @@ export const getAllProfiles = gql`
       handle
       skills
       status
-      following{
-        following{
+      following {
+        following {
           name
           _id
         }
-        user{
+        user {
           name
           _id
         }
       }
-      followers{
-         follower{
-           name
-           _id
-         }
+      followers {
+        follower {
+          name
+          _id
+        }
       }
-      user{
+      user {
         name
         _id
       }
@@ -101,6 +145,7 @@ export const profilePosts = gql`
       handle
       user {
         name
+        _id
         posts {
           text
           likes {
@@ -159,9 +204,30 @@ export const followUser = gql`
   }
 `;
 
-
 export const unFollowUser = gql`
   mutation($id: ID!) {
     unFollowUser(_id: $id)
+  }
+`;
+
+export const profileVisited = gql`
+  mutation($id: ID!) {
+    profileVisited(_id: $id)
+  }
+`;
+
+export const getNotifications = gql`
+  query {
+    getNotifications {
+      text
+      date
+      user {
+        name
+      }
+      commUser {
+        name
+      }
+      type
+    }
   }
 `;

@@ -41,6 +41,7 @@ type User {
   password: String
   _id: ID
   posts: [Post!]
+  profile: Profile
 }
 
 type Following {
@@ -50,8 +51,10 @@ type Following {
 
 type Notification {
   user: User!
-  type: String!
+  text: String!
   commUser: User!
+  type: String!
+  date: String!
 }
 
 type Follower {

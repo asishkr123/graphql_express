@@ -1,7 +1,8 @@
 import React from "react";
 import { Mutation } from "react-apollo";
-import {followUser,unFollowUser, getAllProfiles} from '../../queries/profileQueries';
+import {followUser,unFollowUser, getAllProfiles ,getCurrentProfile} from '../../queries/profileQueries';
 export default function FollowUser(props) {
+  console.log(props);
   return (
     <Mutation
      mutation = {props.followed ?  unFollowUser : followUser}
@@ -17,12 +18,12 @@ export default function FollowUser(props) {
                    variables : {
                        id : props.id,
                    },
-                   refetchQueries : [{query : getAllProfiles}]
+                   refetchQueries : [!props.fromDashboard ? {query : getAllProfiles} : {query : getCurrentProfile}]
                })
            }}
           
           
-          style = {{marginLeft : "25px"}} className="btn waves-effect waves-light blue lighten-2 white-text">{props.followed ? "unfollow" : "follow"} here</button>
+          style = {{marginLeft : "25px"}} className="btn waves-effect waves-light white lighten-2-text blue-text">{props.followed ? "unfollow" : "follow"} here</button>
         );
       }}
     </Mutation>

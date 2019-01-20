@@ -12,8 +12,10 @@ import { Provider } from "react-redux";
 import { currentUser } from "./actions/userActions";
 import jwt_decode from "jwt-decode";
 import Dashboard from "./Components/Layout/Dashboard";
-import Posts from "./Components/Profile/Posts";
 import AllProfiles from "./Components/Profile/Allprofiles";
+import Notifications from "./Components/Profile/Notifications";
+import Posts from "./Components/Profile/Posts";
+import UsersList from "./Components/Profile/UsersList";
 const client = new ApolloClient({
   uri: "http://localhost:4000",
   request: async operation => {
@@ -57,7 +59,13 @@ class App extends Component {
                 <Route exact path="/profile/:handle" component={Posts} />
               </Switch>
               <Switch>
-                <Route exact path="/activity" component={Posts} />
+                <PrivateRoute exact path="/activity" component={Notifications} />
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path="/followers" component={UsersList} />
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path="/following" component={UsersList} />
               </Switch>
             </>
           </BrowserRouter>

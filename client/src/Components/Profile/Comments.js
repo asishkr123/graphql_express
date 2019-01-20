@@ -1,7 +1,8 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Mutation } from "react-apollo";
 import { createComment } from "../../queries/Comments";
-import { profilePosts } from "../../queries/profileQueries";
+import { profilePosts ,  getCurrentProfile} from "../../queries/profileQueries";
 class Comments extends React.Component {
   state = {
     text: ""
@@ -17,40 +18,47 @@ class Comments extends React.Component {
           return (
             <>
               <div className="row">
-                <form
-                  onSubmit={e => {
-                    e.preventDefault();
-                    createComment({
-                      variables: {
-                        text: this.state.text,
-                        id: this.props.id
-                      },
-                      refetchQueries: [{ query: profilePosts }]
-                    });
-                    this.setState({
-                      text: ""
-                    });
-                  }}
-                >
-                  <div className="col s12">
-                    <div className="input-field col s12">
-                      <textarea
-                        onChange={e => this.setState({ text: e.target.value })}
-                        value={this.state.text}
-                        id="textarea1"
-                        className="materialize-textarea"
-                      />
-                      <label htmlFor="textarea1">Reply Here</label>
+                {this.props.isAuthenticated ? (
+                  <form
+                    onSubmit={e => {
+                      e.preventDefault();
+                      createComment({
+                        variables: {
+                          text: this.state.text,
+                          id: this.props.id
+                        },
+                        refetchQueries: [!this.props.fromDashboard ? { query: profilePosts } : {query : getCurrentProfile}]
+                      });
+                      this.setState({
+                        text: ""
+                      });
+                    }}
+                  >
+                    <div className="col s12">
+                      <div className="input-field col s12">
+                        <textarea
+                          onChange={e =>
+                            this.setState({ text: e.target.value })
+                          }
+                          value={this.state.text}
+                          id="textarea1"
+                          className="materialize-textarea"
+                        />
+                        <label htmlFor="textarea1">Reply Here</label>
+                      </div>
+                      <button className="btn waves-effect waves-light col s12">
+                        Submit
+                      </button>
                     </div>
-                    <button className="btn waves-effect waves-light col s12">
-                      Submit
-                    </button>
-                  </div>
-                </form>
+                  </form>
+                ) : (
+                  <></>
+                )}
+
                 <div className="col s12">
                   {this.props.comments.map((comment, index) => {
                     return (
-                      <div key = {index} className="col s12 card">
+                      <div key={index} className="col s12 card">
                         <div className="card-content">
                           <h5>{comment.text}</h5>
                         </div>
@@ -67,4 +75,8 @@ class Comments extends React.Component {
   }
 }
 
-export default Comments;
+const mapStateToProps = state => ({
+  isAuthenticated: state.user.isAuthenticated
+});
+
+export default connect(mapStateToProps)(Comments);

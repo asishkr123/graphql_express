@@ -27,6 +27,7 @@ import {getFollowers}  from './Users/getFollowers';
 import {QueryUserFollowers} from './Users/QueryUserFollowers';
 import {getCommunicatingUsers}  from './Users/getCommunicatingUser'
 import  { getNotifications} from './Profiles/getNotifications';
+import  {getProfileOfUser}  from './Users/getProfileOfUser';
 export const resolvers = {
   Mutation: {
     createUser: createUser,
@@ -65,7 +66,8 @@ export const resolvers = {
     user: QueryUser
   },
   User: {
-    posts: getPostsByUser
+    posts: getPostsByUser,
+    profile : getProfileOfUser
   },
   Following: {
     user: QueryUser,
