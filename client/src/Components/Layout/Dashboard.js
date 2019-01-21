@@ -30,6 +30,21 @@ function Dashboard() {
               <h4 className="col s10 center-align blue-text lighten-2-text">
                 {data.currentProfile.handle}
               </h4>
+
+              <Link
+                to={{
+                  pathname: "/edit-profile",
+                  state: { profile: data.currentProfile }
+                }}
+              >
+                <button
+                  style={{ marginTop: "20px" }}
+                  className="btn waves-effect waves-light offset-s5 col s4 white blue-text lighten-2-text"
+                >
+                  edit Profile
+                </button>
+              </Link>
+
               <div className="col s6 card">
                 <div className="card-content">
                   <div className="row">
@@ -46,8 +61,8 @@ function Dashboard() {
                     <div className="row col s4">
                       <Link
                         to={{
-                          pathname: "/following",
-                          state: {  following: data.currentProfile.following}
+                          pathname: `/following/${data.currentProfile.user._id}`,
+                          state   :  {followed : true}
                         }}
                       >
                         <div className="col s12 blue-text">
@@ -61,8 +76,8 @@ function Dashboard() {
                     <div className="row col s4">
                       <Link
                         to={{
-                          pathname: "/followers",
-                          state: { followers: data.currentProfile.followers , following: data.currentProfile.following}
+                          pathname: `/followers/${data.currentProfile.user._id}`,
+                          state   :  {followed : false , following : data.currentProfile.following}
                         }}
                       >
                         <div className="col s12 blue-text">
@@ -81,7 +96,6 @@ function Dashboard() {
                           .flat(1)
                           .map(post => (
                             <div className="card col s12">
-                              {/* <div className="card-content">{post.text}</div> */}
                               <div className="card-content">
                                 <InvidualPost
                                   handle={data.currentProfile.handle}
@@ -97,7 +111,7 @@ function Dashboard() {
                   </div>
                 </div>
               </div>
-              <GithubProfile username={data.currentProfile.handle} />
+              <GithubProfile username={data.currentProfile.githubusername} />
             </div>
           );
         }}

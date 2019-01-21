@@ -18,6 +18,8 @@ import { likePost } from "./Posts/LikePosts";
 import { unLikePost } from "./Posts/UnlikePost";
 import { getFollowing } from "./Users/getfollowing";
 import { followUser } from "./Users/FollowUsers";
+import {getAllFollowers} from './Users/getAllFollowers';
+import {getAllFollowing} from './Users/getAllFollowing';
 import { QueryUserFollowing } from "./Users/getFollowingUserdata";
 import { getAllProfiles } from "./Profiles/getAllProfiles";
 import { getLikes } from "./Posts/getLikes";
@@ -28,6 +30,7 @@ import {QueryUserFollowers} from './Users/QueryUserFollowers';
 import {getCommunicatingUsers}  from './Users/getCommunicatingUser'
 import  { getNotifications} from './Profiles/getNotifications';
 import  {getProfileOfUser}  from './Users/getProfileOfUser';
+
 export const resolvers = {
   Mutation: {
     createUser: createUser,
@@ -52,6 +55,8 @@ export const resolvers = {
     getPosts,
     getAllProfiles,
     getNotifications,
+    getAllFollowers : getAllFollowers,
+    getAllFollowing : getAllFollowing,
   },
   Post: {
     user: QueryUser,
@@ -84,5 +89,6 @@ export const resolvers = {
   },
   Likes: {
     user: QueryUser
-  }
+  },
+  
 };

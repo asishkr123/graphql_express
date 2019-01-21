@@ -1,94 +1,81 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Mutation } from "react-apollo";
+import { Query } from "react-apollo";
 import FollowUser from "./FollowUser";
-import { getCurrentProfile, unFollowUser } from "../../queries/profileQueries";
+import { getAllFollowers, getAllFollowing } from "../../queries/profileQueries";
+import Spinner from "../common/Spinner";
 export default class UsersList extends Component {
-  componentDidMount() {
-    console.log(this.props);
-  }
   render() {
-    const { followers, following } = this.props.location.state;
+    console.log(this.props);
     return (
-      <div className="row">
-        <h5
-          style={{ fontStyle: "bold" }}
-          className="col s12 blue-text lighten-2-text center-align"
-        >
-          {this.props.location.state.followers ? "Followers" : "Following"}
-        </h5>
-        {this.props.location.pathname === "/following"
-          ? following.map(following => {
-              return (
-                <Mutation
-                  mutation={unFollowUser}
-                  onCompleted={data => console.log(data)}
-                >
-                  {(unFollowUser, { dara, loading, user }) => {
-                    return (
-                      <div className="col s12 m6 card">
-                        <div className="row card-content">
-                          <div className="center-align">
-                            <h5 className="blue-text s12">
-                              {following.following.name}
-                            </h5>
-
-                            <Link
-                              to={`/profile/${
-                                following.following.profile.handle
-                              }`}
-                            >
-                              <button className="col offset-s3 s6 btn waves-effect waves-light white blue-text lighten-2-text">
-                                View Profile
-                              </button>
-                            </Link>
-                            <button
-                              onClick={e => {
-                                unFollowUser({
-                                  variables: { id: following.following._id },
-                                  refetchQueries: [{ query: getCurrentProfile }]
-                                });
-                              }}
-                              className="col offset-s3 s6 btn waves-effect waves-light white blue-text lighten-2-text"
-                            >
-                              UnFollow
-                            </button>
-                          </div>
+      <Query
+        query={
+          this.props.location.state.followed ? getAllFollowing : getAllFollowers
+        }
+        variables={{ id: this.props.match.params.id }}
+        onCompleted={data => console.log(data)}
+        onError={error => console.log(error)}
+      >
+        {({ data, loading, error }) => {
+          const { followed , following : followingUsers } = this.props.location.state;
+          const dataValue = data
+            ? data.getAllFollowers
+              ? data.getAllFollowers
+              : data.getAllFollowing
+            : null;
+          console.log(dataValue)  
+          return loading ? (
+            <Spinner />
+          ) : (
+            <div className="container">
+              <h5 className="blue-text lighten-2-text center-align">
+                {followed ? "Following" : "Followers"}
+              </h5>
+              <div className="row">
+                {dataValue.map(item => {
+                  const { follower, following } = item;
+                  return (
+                    <div
+                      style={{ margin: "20px" }}
+                      className="col white card s12 m6"
+                    >
+                      <div className="card-content">
+                        <div className="row">
+                          <h5 className="blue-text col s12 center-align lighten-2-text">
+                            {follower
+                              ? follower.name
+                              : following.name}
+                          </h5>
+                          <Link
+                            to={
+                              follower
+                                ? `/profile/${follower.profile.handle}`
+                                : `/profile/${following.profile.handle}`
+                            }
+                          >
+                            <button className="btn white blue-text lighten-2-text">View Profile</button>
+                          </Link>
+                           {
+                             following ? <FollowUser id = {following._id} fromDashboard = {true} followed = {true} userId = { this.props.match.params.id} /> : <></>
+                            
+                              
+                           }
+                           { 
+                            // follower  ? followingUsers.map((followingUser) => {return (
+                            //   <FollowUser followed = {followingUser._id === follower._id} id = {follower._id}  userId = { this.props.match.params.id} />
+                            // )}): ""
+                            follower ? <FollowUser followed = {followingUsers.some(followingUser => followingUser.following._id === follower._id)} id = {follower._id} userId = { this.props.match.params.id}  /> :""
+                           }
                         </div>
                       </div>
-                    );
-                  }}
-                </Mutation>
-              );
-            })
-          : followers.map(follower => {
-              return (
-                <div className="col s12 m6 card">
-                  <div className="row card-content">
-                    <div className="center-align">
-                      <h5 className="blue-text s12">
-                        {follower.follower.name}
-                      </h5>
-                      <Link to={`/profile/${follower.follower.profile.handle}`}>
-                        <button className="col offset-s3 s6 btn waves-effect waves-light white blue-text lighten-2-text">
-                          View Profile
-                        </button>
-                      </Link>
-                      <FollowUser
-                      fromDashboard = {true}
-                        followed={
-                          following.filter(
-                            following => following.following._id === follower.follower._id
-                          ).length > 0
-                        }
-                        id={follower.follower._id}
-                      />
                     </div>
-                  </div>
-                </div>
-              );
-            })}
-      </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        }}
+      </Query>
     );
   }
 }

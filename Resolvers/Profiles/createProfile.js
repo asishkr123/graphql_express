@@ -3,7 +3,6 @@ import validateProfileInput from "../../Validators/profileValidation";
 import { authenticateUser } from "../../Validators/auth";
 
 export const createProfile = async (parent, args, ctx) => {
-  console.log(args);
   const user = authenticateUser(ctx.request);
   if (user instanceof Error || user === null) {
     return user;
@@ -12,12 +11,8 @@ export const createProfile = async (parent, args, ctx) => {
     if (!isValid) {
       return Error(JSON.stringify(errors));
     } else {
-      const handle = await Profile.findOne({ handle: args.handle });
-      if (handle) {
-        return Error(JSON.stringify({...errors , handle : "handle already exists"}));
-      }
       const skills = args.skills.split(",");
-      const newProfile = new Profile({
+      const profileData = {
         handle: args.handle,
         user: user.id,
         skills,
@@ -27,9 +22,26 @@ export const createProfile = async (parent, args, ctx) => {
         website: args.website ? args.website : "",
         from: args.from ? args.from : "",
         to: args.to ? args.to : ""
-      });
-      const profile = await newProfile.save();
-      return { ...profile._doc, skills: profile.skills.join(",") };
+      };
+      const profile = await Profile.findOne({ user: user.id });
+      if (profile) {
+        const newProfile = await Profile.findOneAndUpdate(
+          { user: user.id },
+          { $set: profileData },
+          { new: true }
+        );
+        return { ...newProfile._doc, skills: newProfile.skills.join(",") };
+      } else {
+        const handle = await Profile.findOne({ handle: args.handle });
+        if (handle) {
+          return Error(
+            JSON.stringify({ ...errors, handle: "handle already exists" })
+          );
+        }
+        const newProfile = new Profile(profileData);
+        const profile = await newProfile.save();
+        return { ...profile._doc, skills: profile.skills.join(",") };
+      }
     }
   }
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import { Mutation } from "react-apollo";
-import {followUser,unFollowUser, getAllProfiles ,getCurrentProfile} from '../../queries/profileQueries';
+import {followUser,unFollowUser, getAllProfiles ,getCurrentProfile, getAllFollowers , getAllFollowing} from '../../queries/profileQueries';
 export default function FollowUser(props) {
   console.log(props);
   return (
@@ -18,7 +18,7 @@ export default function FollowUser(props) {
                    variables : {
                        id : props.id,
                    },
-                   refetchQueries : [!props.fromDashboard ? {query : getAllProfiles} : {query : getCurrentProfile}]
+                   refetchQueries : [{query : getAllProfiles} , {query : getCurrentProfile} , {query : getAllFollowers , variables : {id : props.userId}} ,  {query : getAllFollowing , variables : {id : props.userId}}]
                })
            }}
           

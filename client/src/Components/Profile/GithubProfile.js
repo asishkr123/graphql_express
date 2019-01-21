@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+
 export default class GithubProfile extends Component {
   state = {
     repos: [],
@@ -43,13 +43,13 @@ export default class GithubProfile extends Component {
             <div key={repo.id} className=" card col s12">
               <div className="card-content">
                 <h4 className="center-align">
-                  <Link
-                    to={repo.html_url}
-                    className="text-info"
+                  <a
+                    href= {`https://github.com/${this.props.username}/${repo.name}`}
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     {repo.name}
-                  </Link>
+                  </a>
                 </h4>
                 <p
                   style={{ marginBottom: "20px" }}

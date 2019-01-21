@@ -26,7 +26,7 @@ export default function Notifications() {
                     .map((notification, index) => (
                       <div key={index} style = {{fontWeight : "bold"}} className="text-black center-align">
                         {notification.text + " " }
-                        <Moment fromNow>{Date(notification.date)}</Moment>
+                        <Moment durationFromNow>{Date(notification.date)}</Moment>
                       </div>
                     ))}
                 </CollapsibleItem>
@@ -36,7 +36,7 @@ export default function Notifications() {
                     .map((notification, index) => (
                       <div style ={{fontWeight : "bold"}} key={index} className="text-blue lighten-2-text  center-align">
                         {notification.text + " "  } 
-                        <Moment fromNow>{Date(notification.date)}</Moment>
+                        <Moment durationFromNow>{Date(notification.date)}</Moment>
                       </div>
                     ))}
                 </CollapsibleItem>
@@ -48,7 +48,7 @@ export default function Notifications() {
                     .map((notification, index) => (
                       <div key={index} style ={{fontWeight : "bold"}}  className="text-blue lighten-2-text center-align">
                         {notification.text + " "  } 
-                        <Moment fromNow>{Date(notification.date)}</Moment>
+                        <Moment durationFromNow>{Date(notification.date)}</Moment>
                       </div>
                     ))}
                 </CollapsibleItem>

@@ -16,6 +16,7 @@ import AllProfiles from "./Components/Profile/Allprofiles";
 import Notifications from "./Components/Profile/Notifications";
 import Posts from "./Components/Profile/Posts";
 import UsersList from "./Components/Profile/UsersList";
+import createProfile from "./Components/Profile/createProfile";
 const client = new ApolloClient({
   uri: "http://localhost:4000",
   request: async operation => {
@@ -62,10 +63,13 @@ class App extends Component {
                 <PrivateRoute exact path="/activity" component={Notifications} />
               </Switch>
               <Switch>
-                <PrivateRoute exact path="/followers" component={UsersList} />
+                <PrivateRoute exact path="/followers/:id" component={UsersList} />
               </Switch>
               <Switch>
-                <PrivateRoute exact path="/following" component={UsersList} />
+                <PrivateRoute exact path="/following/:id" component={UsersList} />
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path="/edit-profile" component={createProfile} />
               </Switch>
             </>
           </BrowserRouter>

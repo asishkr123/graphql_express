@@ -231,3 +231,40 @@ export const getNotifications = gql`
     }
   }
 `;
+
+
+
+export const getAllFollowers = gql`
+ query($id : ID!){
+    getAllFollowers(_id : $id){
+       follower{
+         profile{
+            handle
+         }
+         _id
+         name
+         
+       }
+    }
+ }
+
+`
+
+
+
+
+export const getAllFollowing = gql`
+ query($id : ID!){
+    getAllFollowing(_id : $id){
+       following{
+         profile{
+            handle
+         }
+         _id
+         name
+         
+       }
+    }
+ }
+
+`

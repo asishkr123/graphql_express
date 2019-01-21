@@ -1,17 +1,25 @@
 import React, { Component } from "react";
 import { Mutation } from "react-apollo";
-import {createProfile}   from '../../queries/profileQueries';
+import {createProfile,getCurrentProfile}   from '../../queries/profileQueries';
 import  {withRouter} from 'react-router-dom';
  class CreateProfile extends Component {
-  state = {
-    handle: "",
-    bio: "",
-    company: "",
-    status: "",
-    skills: "",
-    githubusername: "",
-    errors: {}
-  };
+   constructor(props){
+      super()
+      this.state = {
+        handle: props && props.location.state.profile.handle ?  props.location.state.profile.handle  :  "",
+        bio: props && props.location.state.profile.bio ?  props.location.state.profile.bio    : "",
+        company: props && props.location.state.profile.company ?  props.location.state.profile.company :"",
+        status: props && props.location.state.profile.status ?  props.location.state.profile.status :"",
+        skills: props && props.location.state.profile.skills ?  props.location.state.profile.skills :"",
+        githubusername:props && props.location.state.profile.githubusername ?  props.location.state.profile.githubusername :"",
+        errors: {}
+      };
+   }
+   componentDidMount(){
+      console.log(this.props)
+      console.log(this.props.location.state.profile.handle)
+   }
+  
   render() {
     const { handle, skills, status } = this.state.errors;
     return (
@@ -50,7 +58,8 @@ import  {withRouter} from 'react-router-dom';
                             skills: this.state.skills,
                             githubusername: this.state.githubusername,
                             status: this.state.status
-                          }
+                          },
+                          refetchQueries : [{query : getCurrentProfile}]
                         });
                       }}
                       className="col s12"

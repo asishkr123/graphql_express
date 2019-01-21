@@ -7,6 +7,8 @@ type Query {
   getPosts: [Post!]
   getAllProfiles: [Profile!]!
   getNotifications: [Notification!]
+  getAllFollowers(_id: ID!): [Follower!]
+  getAllFollowing(_id: ID!): [Following!]
 }
 
 type Token {
