@@ -77,7 +77,7 @@ function Dashboard() {
                       <Link
                         to={{
                           pathname: `/followers/${data.currentProfile.user._id}`,
-                          state   :  {followed : false , following : data.currentProfile.following}
+                          state   :  {followed : false}
                         }}
                       >
                         <div className="col s12 blue-text">

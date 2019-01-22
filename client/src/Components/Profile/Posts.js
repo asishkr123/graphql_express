@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import Post from "./Post";
 import CreatePost from "./createPost";
 import ProfileVisited from "./ProfileVisited";
-
+import { Link } from "react-router-dom";
 class Posts extends React.Component {
   render() {
     return (
@@ -31,11 +31,25 @@ class Posts extends React.Component {
             <div className="row">
               <div className="card col s12">
                 <div className="card-content">
-                  <h3 className="blue-text lighten-2-text">
-                    {this.props.match.params.handle
-                      ? data.getProfileByHandle.handle
-                      : data.currentProfile.handle}
-                  </h3>
+                  <div className="row">
+                    <h3 className="blue-text col s12 center-align lighten-2-text">
+                      {this.props.match.params.handle
+                        ? data.getProfileByHandle.handle
+                        : data.currentProfile.handle}
+                    </h3>
+                    <Link
+                      to={`/github-profile/${
+                        this.props.match.params.handle
+                          ? data.getProfileByHandle.githubusername
+                          : data.currentProfile.githubusername
+                      }`}
+                    >
+                      <button className="btn offset-s3 col s4 white blue-text lighten-2-text">
+                        View gitHub repos
+                      </button>
+                    </Link>
+                  </div>
+
                   <Post
                     posts={
                       this.props.match.params.handle
@@ -58,12 +72,7 @@ class Posts extends React.Component {
                         : data.currentProfile.handle
                     }
                   />
-                  {this.props.isAuthenticated ? (
-                    <CreatePost
-                    />
-                  ) : (
-                    <></>
-                  )}
+                  {this.props.isAuthenticated ? <CreatePost /> : <></>}
 
                   {this.props.match.params.handle ? (
                     <ProfileVisited id={data.getProfileByHandle.user._id} />

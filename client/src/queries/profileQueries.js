@@ -82,6 +82,7 @@ export const getProfileByHandle = gql`
       handle
       skills
       status
+      githubusername
       company
       user {
         name
@@ -143,6 +144,7 @@ export const profilePosts = gql`
   query {
     currentProfile {
       handle
+      githubusername
       user {
         name
         _id
@@ -240,6 +242,11 @@ export const getAllFollowers = gql`
        follower{
          profile{
             handle
+            followers{
+              follower{
+                 _id
+              }
+            }
          }
          _id
          name
@@ -259,6 +266,7 @@ export const getAllFollowing = gql`
        following{
          profile{
             handle
+            
          }
          _id
          name

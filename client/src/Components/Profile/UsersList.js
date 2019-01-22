@@ -6,7 +6,6 @@ import { getAllFollowers, getAllFollowing } from "../../queries/profileQueries";
 import Spinner from "../common/Spinner";
 export default class UsersList extends Component {
   render() {
-    console.log(this.props);
     return (
       <Query
         query={
@@ -17,13 +16,13 @@ export default class UsersList extends Component {
         onError={error => console.log(error)}
       >
         {({ data, loading, error }) => {
-          const { followed , following : followingUsers } = this.props.location.state;
+          const { followed } = this.props.location.state;
           const dataValue = data
             ? data.getAllFollowers
               ? data.getAllFollowers
               : data.getAllFollowing
             : null;
-          console.log(dataValue)  
+          console.log(dataValue);
           return loading ? (
             <Spinner />
           ) : (
@@ -42,9 +41,7 @@ export default class UsersList extends Component {
                       <div className="card-content">
                         <div className="row">
                           <h5 className="blue-text col s12 center-align lighten-2-text">
-                            {follower
-                              ? follower.name
-                              : following.name}
+                            {follower ? follower.name : following.name}
                           </h5>
                           <Link
                             to={
@@ -53,19 +50,35 @@ export default class UsersList extends Component {
                                 : `/profile/${following.profile.handle}`
                             }
                           >
-                            <button className="btn white blue-text lighten-2-text">View Profile</button>
+                            <button className="btn white blue-text lighten-2-text">
+                              View Profile
+                            </button>
                           </Link>
-                           {
-                             following ? <FollowUser id = {following._id} fromDashboard = {true} followed = {true} userId = { this.props.match.params.id} /> : <></>
-                            
-                              
-                           }
-                           { 
-                            // follower  ? followingUsers.map((followingUser) => {return (
-                            //   <FollowUser followed = {followingUser._id === follower._id} id = {follower._id}  userId = { this.props.match.params.id} />
-                            // )}): ""
-                            follower ? <FollowUser followed = {followingUsers.some(followingUser => followingUser.following._id === follower._id)} id = {follower._id} userId = { this.props.match.params.id}  /> :""
-                           }
+                          {following ? (
+                            <FollowUser
+                              id={following._id}
+                              fromDashboard={true}
+                              followed={true}
+                              userId={this.props.match.params.id}
+                            />
+                          ) : (
+                            <></>
+                          )}
+                          {// follower  ? followingUsers.map((followingUser) => {return (
+                          //   <FollowUser followed = {followingUser._id === follower._id} id = {follower._id}  userId = { this.props.match.params.id} />
+                          // )}): ""
+                          follower ? (
+                            <FollowUser
+                              followed={follower.profile.followers.some(
+                                profileFollower =>
+                                  profileFollower.follower._id === this.props.match.params.id
+                              )}
+                              id={follower._id}
+                              userId={this.props.match.params.id}
+                            />
+                          ) : (
+                            ""
+                          )}
                         </div>
                       </div>
                     </div>

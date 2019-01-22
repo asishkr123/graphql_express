@@ -17,6 +17,7 @@ import Notifications from "./Components/Profile/Notifications";
 import Posts from "./Components/Profile/Posts";
 import UsersList from "./Components/Profile/UsersList";
 import createProfile from "./Components/Profile/createProfile";
+import GithubProfile from "./Components/Profile/GithubProfile";
 const client = new ApolloClient({
   uri: "http://localhost:4000",
   request: async operation => {
@@ -70,6 +71,9 @@ class App extends Component {
               </Switch>
               <Switch>
                 <PrivateRoute exact path="/edit-profile" component={createProfile} />
+              </Switch>
+              <Switch>
+                <Route exact path="/github-profile/:username" component={GithubProfile} />
               </Switch>
             </>
           </BrowserRouter>

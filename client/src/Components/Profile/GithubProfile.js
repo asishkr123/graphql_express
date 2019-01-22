@@ -9,8 +9,8 @@ export default class GithubProfile extends Component {
     sort: "created: asc"
   };
   componentDidMount() {
-    console.log(this.props.username);
-    const { username } = this.props;
+   
+    const username =  this.props.match && this.props.match.params.username ? this.props.match.params.username : this.props.username
     const { count, sort, clientId, clientSecret } = this.state;
     fetch(
       `https://api.github.com/users/${username}/repos?per_page=${count}&sort=${sort}&client_id=${clientId}&client_secret=${clientSecret}`
